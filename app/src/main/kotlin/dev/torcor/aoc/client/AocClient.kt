@@ -24,6 +24,6 @@ object AocClient {
 
         return res.process()
     }
-
-    private fun String.process() = this.trim().split("\n")
 }
+
+fun String.process() = this.trim().split("\n")

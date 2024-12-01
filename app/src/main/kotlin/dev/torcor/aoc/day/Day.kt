@@ -44,7 +44,7 @@ open class Day {
         println()
     }
 
-    val number: Int
+    private val number: Int
         get() = try {
             this.javaClass.simpleName
                 .substring(3..4)
