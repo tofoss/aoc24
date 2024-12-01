@@ -1,6 +1,7 @@
 package dev.torcor.aoc.day
 
 import dev.torcor.aoc.client.AocClient
+import dev.torcor.aoc.client.process
 import kotlinx.coroutines.runBlocking
 
 open class Day {
@@ -54,5 +55,7 @@ open class Day {
             throw e
         }
 
-    val input: List<String> = runBlocking { AocClient.input(number) }
+    open val example: String? = null
+
+    val input: List<String> get() = example?.process() ?: runBlocking { AocClient.input(number) }
 }

@@ -27,3 +27,12 @@ class Day01 : Day() {
         return listOne.sumOf { it * counts.getOrDefault(it, 0) }
     }
 }
+
+const val DAY_01_EXAMPLE = """
+        3   4
+        4   3
+        2   5
+        1   3
+        3   9
+        3   3
+        """
