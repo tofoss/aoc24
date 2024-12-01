@@ -3,13 +3,11 @@
  */
 package dev.torcor
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import dev.torcor.aoc.client.AocClient
+import kotlinx.coroutines.runBlocking
 
-fun main() {
-    println(App().greeting)
+fun main() = runBlocking {
+    val client = AocClient()
+
+    println(client.input("1"))
 }
