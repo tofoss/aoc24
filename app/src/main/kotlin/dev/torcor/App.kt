@@ -3,11 +3,13 @@
  */
 package dev.torcor
 
-import dev.torcor.aoc.client.AocClient
+import dev.torcor.aoc.day.Day01
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
-    val client = AocClient()
+    val days = listOf(
+        Day01(),
+    )
 
-    println(client.input("1"))
+    days.forEach { it.solve() }
 }
