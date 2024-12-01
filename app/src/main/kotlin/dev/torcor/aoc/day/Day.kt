@@ -4,9 +4,9 @@ import dev.torcor.aoc.client.AocClient
 import kotlinx.coroutines.runBlocking
 
 open class Day {
-    open fun partOne(): String = "Unsolved"
+    open fun partOne(): AocResult = Unsolved
 
-    open fun partTwo(): String = "Unsolved"
+    open fun partTwo(): AocResult = Unsolved
 
     fun solve() {
         val emojis = listOf(
@@ -37,7 +37,7 @@ open class Day {
             "🎇",
         )
 
-        val emoji = if (number in 1..25) emojis[number - 1] else "❓" // Fallback for invalid day
+        val emoji = if (number in 1..25) emojis[number - 1] else "❓"
         println("$emoji Advent of Code - Day $number")
         println("  ❄️ Part 1: ${partOne()}")
         println("  🎅 Part 2: ${partTwo()}")
