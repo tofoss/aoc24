@@ -3,30 +3,48 @@ package dev.torcor.aoc.day
 import dev.torcor.aoc.utils.toInts
 
 class Day02 : Day() {
-    // override val example = DAY_02_EXAMPLE
+    private val decreasing = { a: Int, b: Int -> a - b in 1..3 }
+    private val increasing = { a: Int, b: Int -> b - a in 1..3 }
 
-    override fun partOne(): AocResult = Solution(solvePartOne().toString())
+    override fun partOne(): AocResult = Solution(solve(::isStrictlySafe).toString())
 
-    override fun partTwo(): AocResult = super.partTwo()
+    override fun partTwo(): AocResult = Solution(solve(::isSafeWithDampeners).toString())
+
+    private fun solve(safetyCheck: (List<Int>) -> Boolean) = parse().filter(safetyCheck).count()
 
     private fun parse() = input
         .asSequence()
         .map { toInts(it) }
 
-    private fun solvePartOne() = parse()
-        .filter { isSafe(it) }
-        .count()
+    private fun isStrictlySafe(levels: List<Int>) = isConsistent(levels, decreasing) || isConsistent(levels, increasing)
 
-    private fun isSafe(ints: List<Int>): Boolean {
-        val decreasing = { a: Int, b: Int -> a - b }
-        val increasing = { a: Int, b: Int -> b - a }
+    private fun isConsistent(ints: List<Int>, comparator: (Int, Int) -> Boolean): Boolean = ints
+        .zipWithNext()
+        .all { (a, b) -> comparator(a, b) }
 
-        return isConsistently(decreasing, ints) || isConsistently(increasing, ints)
+    private fun isSafeWithDampeners(ints: List<Int>): Boolean = isStrictlySafe(ints) ||
+        checkAfterDampeners(ints, increasing) ||
+        checkAfterDampeners(ints, decreasing)
+
+    private fun checkAfterDampeners(levels: List<Int>, comparator: (Int, Int) -> Boolean): Boolean {
+        val unsafeIdx = findFirstUnsafeIndex(levels, comparator)
+            ?: throw IllegalStateException("Should have an unsafe level: $levels")
+
+        return (0..1).any { isSafeAfterRemoval(levels, unsafeIdx + it, comparator) }
     }
 
-    private fun isConsistently(difference: (Int, Int) -> Int, ints: List<Int>): Boolean = ints
-        .zipWithNext { a, b -> difference(a, b) in 1..3 }
-        .all { it }
+    private fun findFirstUnsafeIndex(levels: List<Int>, comparator: (Int, Int) -> Boolean) = levels
+        .zipWithNext()
+        .indexOfFirst { (a, b) -> !comparator(a, b) }
+        .takeIf { it >= 0 }
+
+    private fun isSafeAfterRemoval(
+        levels: List<Int>,
+        unsafeIdx: Int,
+        comparator: (Int, Int) -> Boolean,
+    ) = levels
+        .filterIndexed { i, _ -> i != unsafeIdx }
+        .let { isConsistent(it, comparator) }
 }
 
 const val DAY_02_EXAMPLE = """
