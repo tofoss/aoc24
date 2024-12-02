@@ -26,4 +26,4 @@ object AocClient {
     }
 }
 
-fun String.process() = this.trim().split("\n")
+fun String.process() = this.trimIndent().trim().split("\n")

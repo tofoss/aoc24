@@ -1,5 +1,6 @@
 package dev.torcor.aoc.day
 
+import dev.torcor.aoc.utils.toInts
 import kotlin.math.abs
 
 class Day01 : Day() {
@@ -9,7 +10,7 @@ class Day01 : Day() {
 
     private fun parse() = input
         .asSequence()
-        .map { it.split("\\s+".toRegex()).map(String::toInt) }
+        .map { toInts(it) }
         .map { it.first() to it.last() }
         .unzip()
 
