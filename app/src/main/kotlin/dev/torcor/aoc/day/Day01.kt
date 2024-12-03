@@ -4,9 +4,9 @@ import dev.torcor.aoc.utils.toInts
 import kotlin.math.abs
 
 class Day01 : Day() {
-    override fun partOne(): AocResult = Solution(solvePartOne().toString())
+    override fun partOne(): AocResult = Solution(solvePartOne())
 
-    override fun partTwo(): AocResult = Solution(solvePartTwo().toString())
+    override fun partTwo(): AocResult = Solution(solvePartTwo())
 
     private fun parse() = input
         .asSequence()
@@ -37,3 +37,5 @@ const val DAY_01_EXAMPLE = """
         3   9
         3   3
         """
+
+fun main() = Day01().solve()

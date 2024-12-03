@@ -2,8 +2,8 @@ package dev.torcor.aoc.day
 
 sealed interface AocResult
 
-data class Solution(
-    val answer: String,
+data class Solution<T>(
+    val answer: T,
 ) : AocResult {
     override fun toString() = "$answer \uD83C\uDF89"
 }
