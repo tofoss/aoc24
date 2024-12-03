@@ -1,6 +1,7 @@
 package dev.torcor.aoc.day
 
 import dev.torcor.aoc.utils.numbersFrom
+import java.util.LinkedList
 
 class Day03 : Day() {
     // override val example = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
@@ -13,7 +14,7 @@ class Day03 : Day() {
 
     override fun partTwo() = Solution(
         parse("$mulPattern|$doPattern|$dontPattern")
-            .toList()
+            .toCollection(LinkedList())
             .let { compute(it) },
     )
 
@@ -22,16 +23,20 @@ class Day03 : Day() {
         .findAll(input.joinToString(""))
         .map { it.value }
 
-    private fun compute(operations: List<String>, `do`: Boolean = true): Int {
+    private tailrec fun compute(
+        operations: LinkedList<String>,
+        execute: Boolean = true,
+        result: Int = 0,
+    ): Int {
         if (operations.isEmpty()) {
-            return 0
+            return result
         }
-        val op = operations.first()
+        val op = operations.poll()
 
-        return if (op.matches(mulPattern.toRegex()) && `do`) {
-            mul(op) + compute(operations.drop(1))
-        } else {
-            compute(operations.drop(1), op.matches(doPattern.toRegex()))
+        return when {
+            op.matches(mulPattern.toRegex()) && execute -> compute(operations, true, result + mul(op))
+            op.matches(doPattern.toRegex()) -> compute(operations, true, result)
+            else -> compute(operations, false, result)
         }
     }
 
