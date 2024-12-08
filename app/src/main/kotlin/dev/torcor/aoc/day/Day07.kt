@@ -4,6 +4,7 @@ import dev.torcor.aoc.utils.longsFrom
 
 class Day07 : Day() {
     // override val example = DAY_07_EXAMPLE
+
     private val plus = { a: Long, b: Long -> a + b }
     private val multiply = { a: Long, b: Long -> a * b }
     private val concat = { a: Long, b: Long -> "$a$b".toLong() }
@@ -26,7 +27,7 @@ class Day07 : Day() {
         values: List<Long>,
         operators: List<(Long, Long) -> Long>,
     ): Long {
-        val operatorCombinations = generateCombinations(values.size - 1, operators)
+        val operatorCombinations = generateLazyCombinations(values.size - 1, operators)
 
         operatorCombinations.forEach { combination ->
             val result = values.reduceIndexed { index, acc, value ->
@@ -43,6 +44,18 @@ class Day07 : Day() {
         (1..n).fold(listOf(emptyList())) { acc, _ ->
             acc.flatMap { combination -> operators.map { combination + it } }
         }
+
+    private fun generateLazyCombinations(n: Int, operators: List<(Long, Long) -> Long>): Sequence<List<(Long, Long) -> Long>> = sequence {
+        if (n == 0) {
+            yield(emptyList())
+        } else {
+            generateLazyCombinations(n - 1, operators).forEach { combination ->
+                operators.forEach { operator ->
+                    yield(combination + operator)
+                }
+            }
+        }
+    }
 }
 
 const val DAY_07_EXAMPLE = """
