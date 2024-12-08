@@ -4,6 +4,8 @@ fun toInts(str: String) = str.split("\\s+".toRegex()).map(String::toInt)
 
 fun numbersFrom(str: String) = "\\d+".toRegex().findAll(str).map { it.value.toInt() }.toList()
 
+fun longsFrom(str: String) = "\\d+".toRegex().findAll(str).map { it.value.toLong() }.toList()
+
 fun <T> T.debug(prefix: String? = null, suffix: String? = null): T {
     return this.also { println("${prefix ?: ""}$this${suffix?.let { "$it " } ?: ""}") }
 }
