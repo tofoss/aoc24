@@ -7,9 +7,9 @@ import dev.torcor.aoc.utils.debug
 class Day06 : Day() {
     // override val example = DAY_06_EXAMPLE
 
-    override fun partOne(): AocResult = Solution(traceGuardVisits().distinct().count())
+    override fun partOne(): AocResult = Solution { traceGuardVisits().distinct().count() }
 
-    override fun partTwo(): AocResult = Solution(simulateObstructions().count())
+    override fun partTwo(): AocResult = Solution { simulateObstructions().count() }
 
     private fun parse() = input.map(String::toList)
 

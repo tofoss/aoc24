@@ -5,9 +5,9 @@ import dev.torcor.aoc.utils.debug
 class Day04 : Day() {
     // override val example = DAY_04_EXAMPLE
 
-    override fun partOne() = Solution(findXmas())
+    override fun partOne() = Solution { findXmas() }
 
-    override fun partTwo() = Solution(findMasMas())
+    override fun partTwo() = Solution { findMasMas() }
 
     private fun parse() = input.map { it.toCharArray().toList() }
 

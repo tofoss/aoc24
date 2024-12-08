@@ -8,9 +8,9 @@ class Day07 : Day() {
     private val multiply = { a: Long, b: Long -> a * b }
     private val concat = { a: Long, b: Long -> "$a$b".toLong() }
 
-    override fun partOne(): AocResult = Solution(solve(listOf(plus, multiply)))
+    override fun partOne(): AocResult = Solution { solve(listOf(plus, multiply)) }
 
-    override fun partTwo(): AocResult = Solution(solve(listOf(plus, multiply, concat)))
+    override fun partTwo(): AocResult = Solution { solve(listOf(plus, multiply, concat)) }
 
     private fun parse() = input.map {
         val (expected, values) = it.split(":").map { s -> longsFrom(s) }

@@ -10,13 +10,13 @@ class Day03 : Day() {
     private val doPattern = "do\\(\\)"
     private val dontPattern = "don't\\(\\)"
 
-    override fun partOne() = Solution(parse(mulPattern).sumOf { mul(it) })
+    override fun partOne() = Solution { parse(mulPattern).sumOf { mul(it) } }
 
-    override fun partTwo() = Solution(
+    override fun partTwo() = Solution {
         parse("$mulPattern|$doPattern|$dontPattern")
             .toCollection(LinkedList())
-            .let { compute(it) },
-    )
+            .let { compute(it) }
+    }
 
     private fun parse(pattern: String) = pattern
         .toRegex()

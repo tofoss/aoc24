@@ -6,9 +6,9 @@ class Day02 : Day() {
     private val decreasing = { a: Int, b: Int -> a - b in 1..3 }
     private val increasing = { a: Int, b: Int -> b - a in 1..3 }
 
-    override fun partOne(): AocResult = Solution(solve(::isStrictlySafe))
+    override fun partOne(): AocResult = Solution { solve(::isStrictlySafe) }
 
-    override fun partTwo(): AocResult = Solution(solve(::isSafeWithDampeners))
+    override fun partTwo(): AocResult = Solution { solve(::isSafeWithDampeners) }
 
     private fun solve(safetyCheck: (List<Int>) -> Boolean) = parse().filter(safetyCheck).count()
 

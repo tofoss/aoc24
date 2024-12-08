@@ -4,9 +4,9 @@ import dev.torcor.aoc.utils.toInts
 import kotlin.math.abs
 
 class Day01 : Day() {
-    override fun partOne(): AocResult = Solution(solvePartOne())
+    override fun partOne(): AocResult = Solution { solvePartOne() }
 
-    override fun partTwo(): AocResult = Solution(solvePartTwo())
+    override fun partTwo(): AocResult = Solution { solvePartTwo() }
 
     private fun parse() = input
         .asSequence()

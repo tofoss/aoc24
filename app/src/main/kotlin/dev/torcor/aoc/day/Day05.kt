@@ -9,7 +9,7 @@ class Day05 : Day() {
 
     override fun partTwo() = solve(::fixUnorderedUpdates)
 
-    private fun solve(solver: () -> List<Set<Int>>) = Solution(solver().sumOf { it.elementAt(it.size / 2) })
+    private fun solve(solver: () -> List<Set<Int>>) = Solution { solver().sumOf { it.elementAt(it.size / 2) } }
 
     private fun parse(): Pair<Map<Int, Set<Int>>, List<Set<Int>>> {
         val splitIdx = input.indexOf("")
