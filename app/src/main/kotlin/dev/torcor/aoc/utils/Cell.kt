@@ -1,5 +1,7 @@
 package dev.torcor.aoc.utils
 
+import dev.torcor.aoc.day.Direction
+
 data class Cell(
     val row: Int,
     val col: Int,
@@ -10,4 +12,7 @@ data class Cell(
 
         return row !in 0..<rows || col !in 0..<cols
     }
+
+    fun move(direction: Direction) = Cell(row + direction.rowOffset, col + direction.colOffset)
 }
+
