@@ -1,11 +1,26 @@
 package dev.torcor.aoc.day
 
 class Day11 : Day() {
-    // override val example: String = "125 17"
+    //override val example: String = "125 17"
 
     override fun partOne() = solve(25)
 
-    override fun partTwo() = solve(75)
+    override fun partTwo() = Solution {
+        val transitions = buildTree()
+        var stoneCounts = parse().groupingBy { it }.eachCount().mapValues { it.value.toLong() }
+
+        repeat(75) {
+            val nextCounts = mutableMapOf<Long, Long>()
+            for ((stone, count) in stoneCounts) {
+                transitions[stone]?.forEach { child ->
+                    nextCounts[child] = nextCounts.getOrDefault(child, 0L) + count
+                }
+            }
+            stoneCounts = nextCounts
+        }
+
+        stoneCounts.values.sum()
+    }
 
     private fun solve(n: Int) = Solution {
         var stoneCounts = parse().groupingBy { it }.eachCount().mapValues { it.value.toLong() }
@@ -42,6 +57,37 @@ class Day11 : Day() {
         }
 
         return nextCounts
+    }
+
+    private fun buildTree(): Map<Long, List<Long>> {
+        val visited = mutableSetOf<Long>()
+        val transitions = mutableMapOf<Long, List<Long>>()
+
+        fun computeBlink(value: Long): List<Long> = when {
+            value == 0L -> listOf(1L)
+            value.toString().length % 2 == 0 -> {
+                val str = value.toString()
+                listOf(
+                    str.substring(0, str.length / 2).toLong(),
+                    str.substring(str.length / 2).toLong(),
+                )
+            }
+
+            else -> listOf(value * 2024)
+        }
+
+        fun dfs(value: Long) {
+            if (value in visited) return
+            visited.add(value)
+            val results = computeBlink(value)
+            transitions[value] = results
+            results.forEach { dfs(it) }
+        }
+
+        val initialValues = parse()
+        initialValues.forEach { dfs(it) }
+
+        return transitions
     }
 }
 
