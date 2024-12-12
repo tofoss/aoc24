@@ -1,7 +1,5 @@
 package dev.torcor.aoc.day
 
-import dev.torcor.aoc.utils.debug
-
 class Day04 : Day() {
     // override val example = DAY_04_EXAMPLE
 
@@ -19,9 +17,10 @@ class Day04 : Day() {
         return matrix.indices
             .map { row ->
                 matrix[row].indices.mapNotNull { col ->
-                    directions.mapNotNull { dir ->
-                        masOrNull(matrix, dir, row, col)
-                    }.takeIf { it.size == 2 }
+                    directions
+                        .mapNotNull { dir ->
+                            masOrNull(matrix, dir, row, col)
+                        }.takeIf { it.size == 2 }
                 }
             }.flatten()
             .count()
@@ -86,7 +85,6 @@ class Day04 : Day() {
 
         return row in 0..<rows && col in 0..<cols
     }
-
 }
 
 enum class Direction(
@@ -101,6 +99,11 @@ enum class Direction(
     DOWN_LEFT(1, -1),
     LEFT(0, -1),
     UP_LEFT(-1, -1),
+    ;
+
+    companion object {
+        val ULDR = listOf(UP, LEFT, DOWN, RIGHT)
+    }
 }
 
 const val DAY_04_EXAMPLE = """
