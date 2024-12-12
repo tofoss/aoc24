@@ -104,6 +104,14 @@ enum class Direction(
     companion object {
         val ULDR = listOf(UP, LEFT, DOWN, RIGHT)
     }
+
+    fun clockwise() = when (this) {
+        UP -> RIGHT
+        RIGHT -> DOWN
+        DOWN -> LEFT
+        LEFT -> UP
+        else -> throw NotImplementedError("Clockwise not implemented for diagonal directions")
+    }
 }
 
 const val DAY_04_EXAMPLE = """

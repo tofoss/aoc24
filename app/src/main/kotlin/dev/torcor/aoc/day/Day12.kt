@@ -1,18 +1,24 @@
 package dev.torcor.aoc.day
 
 import dev.torcor.aoc.utils.Cell
-import dev.torcor.aoc.utils.debug
+import dev.torcor.aoc.utils.Corner
+import dev.torcor.aoc.utils.corners
 
 class Day12 : Day() {
-    //override val example: String = DAY_12_EXAMPLE
+    // override val example: String = DAY_12_EXAMPLE
 
     override fun partOne() = Solution {
         buildRegions().sumOf { it.plots.size * it.plots.sumOf { p -> p.edges } }
     }
 
-    fun parse() = input.mapIndexed { rowIndex, row -> row.mapIndexed { index, c -> Plot(c, Cell(rowIndex, index), 0) } }
+    override fun partTwo() = Solution {
+        buildRegions().sumOf { it.plots.size * it.plots.sumOf { p -> p.corners.size } }
+    }
 
-    fun buildRegions(): List<Region> {
+    private fun parse() =
+        input.mapIndexed { rowIndex, row -> row.mapIndexed { index, c -> Plot(c, Cell(rowIndex, index), 0, emptyList()) } }
+
+    private fun buildRegions(): List<Region> {
         val map = parse()
         val visited = mutableSetOf<Plot>()
         val result = mutableListOf<Region>()
@@ -24,11 +30,12 @@ class Day12 : Day() {
             val neighbors = Direction.ULDR.map {
                 plot.neighbor(it, map)
             }
+            val corners = plot.cell.corners(map) { it.plant != plot.plant }
             val edges = neighbors.count { it == null }
 
             neighbors.filterNotNull().forEach { dfs(it, currentRegion) }
 
-            currentRegion.add(plot.copy(edges = edges))
+            currentRegion.add(plot.copy(edges = edges, corners = corners))
         }
 
         map.forEach { row ->
@@ -36,7 +43,7 @@ class Day12 : Day() {
                 val currentRegion = mutableSetOf<Plot>()
                 dfs(col, currentRegion)
                 if (currentRegion.isNotEmpty()) {
-                    result.add(Region(currentRegion.first().plant, currentRegion.toSet()))
+                    result.add(Region(currentRegion.first().plant, currentRegion))
                 }
             }
         }
@@ -48,6 +55,7 @@ class Day12 : Day() {
         val plant: Char,
         val cell: Cell,
         val edges: Int,
+        val corners: List<Corner>,
     ) {
         fun neighbor(direction: Direction, map: List<List<Plot>>): Plot? {
             val nextCell = cell.move(direction)

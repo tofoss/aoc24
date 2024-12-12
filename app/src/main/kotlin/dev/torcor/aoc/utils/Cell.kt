@@ -15,5 +15,3 @@ data class Cell(
 
     fun move(direction: Direction) = Cell(row + direction.rowOffset, col + direction.colOffset)
 }
-
-
