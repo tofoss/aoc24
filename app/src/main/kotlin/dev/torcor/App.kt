@@ -11,6 +11,9 @@ import dev.torcor.aoc.day.Day08
 import dev.torcor.aoc.day.Day09
 import dev.torcor.aoc.day.Day10
 import dev.torcor.aoc.day.Day11
+import dev.torcor.aoc.day.Day12
+import dev.torcor.aoc.day.Day13
+import dev.torcor.aoc.day.Day14
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
@@ -26,7 +29,11 @@ fun main() = runBlocking {
         Day09(),
         Day10(),
         Day11(),
+        Day12(),
+        Day13(),
+        Day14(),
     )
 
     days.forEach { it.solve() }
+
 }

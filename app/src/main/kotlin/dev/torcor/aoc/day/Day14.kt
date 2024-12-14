@@ -5,10 +5,10 @@ import dev.torcor.aoc.utils.debug
 import dev.torcor.aoc.utils.numbersFrom
 
 class Day14 : Day() {
-    //override val example = DAY_14_EXAMPLE
+    // override val example = DAY_14_EXAMPLE
 
-    //private val rows = 7
-    //private val cols = 11
+    // private val rows = 7
+    // private val cols = 11
     private val rows = 103
     private val cols = 101
 
@@ -20,6 +20,31 @@ class Day14 : Day() {
         }
 
         countRobotsInQuadrants(grid)
+    }
+
+    override fun partTwo() = Solution {
+        var robots = parse()
+        var seconds = 0
+        var drawnTree = false
+
+        while (!drawnTree) {
+            drawnTree = draw(robots)
+            seconds++
+            robots = robots.map { it.copy(position = it.position.move(it.velocity)) }
+        }
+
+        seconds
+    }
+
+    private fun draw(robots: List<Robot>): Boolean {
+        val grid = List(rows) { MutableList(cols) { '.' } }
+        robots.forEach { grid[it.position.row][it.position.col] = '#' }
+        val frame = grid.map { it.joinToString("") }
+        if (frame.any { it.contains("########") }) {
+            frame.forEach { it.debug() }
+            return true
+        }
+        return false
     }
 
     private fun countRobotsInQuadrants(grid: List<MutableList<Int>>): Int {
@@ -40,74 +65,18 @@ class Day14 : Day() {
     private fun calculateFinalPosition(robot: Robot): Cell {
         val velocity = robot.velocity
         return (1..100).fold(robot.position) { cell, i ->
-            cell.move(velocity.rowV, velocity.colV)
+            cell.move(velocity)
         }
     }
 
-    fun Cell.move(rowV: Int, colV: Int): Cell {
-        val newRow = moveRow(this.row, rowV)
-        val newCol = moveCol(this.col, colV)
-        return Cell(newRow, newCol)
-    }
+    private fun Cell.move(velocity: Velocity): Cell = Cell(
+        row = (this.row + velocity.rowV).modWrapAround(rows),
+        col = (this.col + velocity.colV).modWrapAround(cols),
+    )
 
-    private fun moveRow(row: Int, rowV: Int): Int {
-        val result = row + rowV
-
-        return if (result in 0..<rows) {
-            result
-        } else if (result < 0) {
-            teleportUp(result)
-        } else {
-            teleportDown(result)
-        }
-    }
-
-    private fun teleportDown(result: Int): Int {
-        val teleportLoc = result - rows
-        return if (teleportLoc in 0..<rows) {
-            teleportLoc
-        } else {
-            teleportDown(teleportLoc)
-        }
-    }
-
-    private fun teleportUp(result: Int): Int {
-        val teleportLoc = rows + result
-        return if (teleportLoc in 0..<rows) {
-            teleportLoc
-        } else {
-            teleportUp(teleportLoc)
-        }
-    }
-
-    private fun moveCol(col: Int, colV: Int): Int {
-        val result = col + colV
-
-        return if (result in 0..<cols) {
-            result
-        } else if (result < 0) {
-            teleportLeft(result)
-        } else {
-            teleportRight(result)
-        }
-    }
-
-    private fun teleportLeft(result: Int): Int {
-        val teleportLoc = result + cols
-        return if (teleportLoc in 0..<cols) {
-            teleportLoc
-        } else {
-            teleportLeft(teleportLoc)
-        }
-    }
-
-    private fun teleportRight(result: Int): Int {
-        val teleportLoc = result - cols
-        return if (teleportLoc in 0..<cols) {
-            teleportLoc
-        } else {
-            teleportRight(teleportLoc)
-        }
+    private fun Int.modWrapAround(n: Int): Int {
+        val result = this % n
+        return if (result < 0) result + n else result
     }
 
     fun parse() = input.map {
