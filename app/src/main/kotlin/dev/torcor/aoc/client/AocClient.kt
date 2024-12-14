@@ -10,10 +10,10 @@ object AocClient {
 
     private val cache = AocCache.loadCache()
 
-    suspend fun input(day: Int): List<String> {
+    suspend fun input(day: Int): String {
         val cachedResponse = cache[day.toString()]
         if (cachedResponse != null) {
-            return cachedResponse.process()
+            return cachedResponse
         }
 
         val url = "https://adventofcode.com/2024/day/$day/input"
@@ -22,7 +22,7 @@ object AocClient {
 
         AocCache.saveToFile(day.toString(), res)
 
-        return res.process()
+        return res
     }
 }
 

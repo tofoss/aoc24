@@ -57,5 +57,7 @@ open class Day {
 
     open val example: String? = null
 
-    val input: List<String> get() = example?.process() ?: runBlocking { AocClient.input(number) }
+    val inputRaw: String get() = example ?: runBlocking { AocClient.input(number) }
+
+    val input: List<String> get() = inputRaw.process()
 }
