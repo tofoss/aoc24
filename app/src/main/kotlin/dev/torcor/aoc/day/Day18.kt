@@ -12,6 +12,20 @@ class Day18 : Day() {
         shortestPath(pushdown(1024), Cell(0, 0), Cell(range.max(), range.max()))
     }
 
+    override fun partTwo() = Solution {
+        var byteNumber = 1024
+        val bytes = parse()
+        val grid = pushdown(byteNumber)
+        var byte: Cell
+
+        do {
+            byte = bytes[++byteNumber]
+            grid[byte.row][byte.col] = '#'
+        } while (shortestPath(grid, Cell(0, 0), Cell(range.max(), range.max())) > -1)
+
+        "${byte.col},${byte.row}"
+    }
+
     private fun shortestPath(
         grid: List<MutableList<Char>>,
         start: Cell,
