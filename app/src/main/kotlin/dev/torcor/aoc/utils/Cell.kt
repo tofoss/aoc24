@@ -14,4 +14,11 @@ data class Cell(
     }
 
     fun move(direction: Direction) = Cell(row + direction.rowOffset, col + direction.colOffset)
+
+    fun <T> value(grid: List<List<T>>) = grid[row][col]
 }
+
+fun <T> List<List<T>>.firstCell(value: T) = this
+    .withIndex()
+    .firstOrNull { (_, row) -> row.contains(value) }
+    ?.let { (rowIndex, row) -> Cell(rowIndex, row.indexOf(value)) }
