@@ -20,6 +20,28 @@ class Day23 : Day() {
         sets.size
     }
 
+    override fun partTwo() = Solution {
+        val graph = parse()
+
+        val largestCluster = graph.keys
+            .map { key ->
+                val neighbors = graph[key]!!
+                val intersectingNeighbors = neighbors
+                    .map { n ->
+                        graph[n]!!.intersect(neighbors)
+                    }.filter { it.isNotEmpty() }
+
+                val cluster = intersectingNeighbors
+                    .flatMap { s1 ->
+                        intersectingNeighbors.flatMap { s2 -> s1.intersect(s2) }.toSet()
+                    }
+
+                cluster + setOf(key)
+            }.maxByOrNull { it.size }
+
+        largestCluster?.distinct()?.sorted()?.joinToString(",")
+    }
+
     private fun parse(): Map<String, Set<String>> = input
         .map { it.split("-") }
         .fold(mutableMapOf<String, MutableSet<String>>()) { graph, (n1, n2) ->
