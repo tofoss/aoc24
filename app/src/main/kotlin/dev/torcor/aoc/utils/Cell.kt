@@ -22,3 +22,15 @@ fun <T> List<List<T>>.firstCell(value: T) = this
     .withIndex()
     .firstOrNull { (_, row) -> row.contains(value) }
     ?.let { (rowIndex, row) -> Cell(rowIndex, row.indexOf(value)) }
+
+fun <T> List<List<T>>.allCells(value: T) = this
+    .mapIndexed { rowIndex, row ->
+        row
+            .mapIndexed { colIndex, col ->
+                if (col == value) {
+                    Cell(rowIndex, colIndex)
+                } else {
+                    null
+                }
+            }.filterNotNull()
+    }.flatten()
